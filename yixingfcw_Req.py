@@ -6,9 +6,14 @@ Created on Wed Feb 12 20:42:56 2020
 """
 
 import requests
+from bs4 import BeautifulSoup
 
-def getData():
-    pass
+def getData(htmlfile):
+    wholeData=BeautifulSoup(htmlfile,"html.parser")
+    Datademo=wholeData.a.string
+    for sibling in (wholeData.li.next_siblings):
+        print(sibling)
+    return Datademo
 
 def coreDataBeneficiate():
     pass
@@ -26,8 +31,10 @@ def getURLcontent(url):
         
 
 designative_url = "http://www.yxfcw.cn/sale/"
-Text=getURLcontent(designative_url).text
-print(Text[2000:3000])
+htmlText=getURLcontent(designative_url).text
+htmlData=getData(htmlText)
+print(htmlData)
+
     
 
 
