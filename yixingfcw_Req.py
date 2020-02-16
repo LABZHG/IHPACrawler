@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 def getData(htmlfile):
     wholeData=BeautifulSoup(htmlfile,"html.parser")
     Datademo=wholeData.a.string
-    for sibling in (wholeData.li.next_siblings):
+    for sibling in (wholeData.li.parents):
         print(sibling)
     return Datademo
 
@@ -33,7 +33,7 @@ def getURLcontent(url):
 designative_url = "http://www.yxfcw.cn/sale/"
 htmlText=getURLcontent(designative_url).text
 htmlData=getData(htmlText)
-print(htmlData)
+#print(htmlData)
 
     
 
