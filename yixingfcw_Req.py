@@ -7,13 +7,20 @@ Created on Wed Feb 12 20:42:56 2020
 
 import requests
 from bs4 import BeautifulSoup
+import re
+
 
 def getData(htmlfile):
     wholeData=BeautifulSoup(htmlfile,"html.parser")
-    Datademo=wholeData.a.string
-    for sibling in (wholeData.li.parents):
-        print(sibling)
-    return Datademo
+    Databegin=wholeData.div
+    for sibling in (Databegin.find_next_siblings()):
+        if(sibling.attrs=={'id':'yimao1200'}):
+            getList=sibling
+    finalList=[]
+    for dTag in getList.findAll('li'):
+        finalList.append(dTag.string)
+        print(finalList)
+    return Databegin.name
 
 def coreDataBeneficiate():
     pass
