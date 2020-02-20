@@ -7,7 +7,7 @@ Created on Wed Feb 12 20:42:56 2020
 
 import requests
 from bs4 import BeautifulSoup
-import re
+import numpy as np
 
 
 def getData(htmlfile):
@@ -17,10 +17,17 @@ def getData(htmlfile):
         if(sibling.attrs=={'id':'yimao1200'}):
             getList=sibling
     finalList=[]
+    tempRow=[]
     for dTag in getList.findAll('li'):
-        finalList.append(dTag.string)
-        print(finalList)
-    return Databegin.name
+        if(dTag.string):
+            tempRow.append(dTag.string)
+        else:
+            if(len(tempRow)):
+                finalList.append(tempRow[:])
+            tempRow.clear()
+            continue  
+    print(finalList)
+    return finalList
 
 def coreDataBeneficiate():
     pass
