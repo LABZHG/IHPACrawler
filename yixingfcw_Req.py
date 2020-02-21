@@ -26,8 +26,8 @@ def getData(htmlfile):
                 finalList.append(tempRow[:])
             tempRow.clear()
             continue  
-    print(finalList)
-    return finalList
+    DataList = list(filter(None, finalList)) 
+    return DataList
 
 def coreDataBeneficiate():
     pass
@@ -47,7 +47,7 @@ def getURLcontent(url):
 designative_url = "http://www.yxfcw.cn/sale/"
 htmlText=getURLcontent(designative_url).text
 htmlData=getData(htmlText)
-#print(htmlData)
+print(htmlData)
 
     
 
