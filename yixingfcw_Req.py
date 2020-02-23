@@ -54,7 +54,7 @@ def getURLcontent(url):
 designative_url = "http://www.yxfcw.cn/sale/"
 htmlText=getURLcontent(designative_url).text
 htmlData=getData(htmlText)
-print(htmlData)
+demoOutput(htmlData)
 
     
 
