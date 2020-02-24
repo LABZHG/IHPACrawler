@@ -7,7 +7,7 @@ Created on Wed Feb 12 20:42:56 2020
 
 import requests
 from bs4 import BeautifulSoup
-import xlsxwriter
+from openpyxl import Workbook
 
 
 def getData(htmlfile):
@@ -30,11 +30,13 @@ def getData(htmlfile):
     return DataList
 
 def demoOutput(demoList):
-    Exfile=xlsxwriter.Workbook('demo.xlsx')
-    Exsheet=Exfile.add_worksheet(u'sheet1')
-    for i in range(len(demoList)):
-        Exsheet.write('A%s'%str(i+1),demoList[i])
-    Exfile.close()
+    Exbook=Workbook()
+    Exsheet=Exbook.active
+    Exsheet.title='sheet1'
+    for i in range(0,len(demoList)):
+        for j in range(0,len(demoList[i])):
+            Exsheet.cell(row=i+1,column=j+1,value=str(demoList[i][j]))
+    Exbook.save('demo.xlsx')
     
 def coreDataBeneficiate():
     pass
