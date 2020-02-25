@@ -38,8 +38,14 @@ def demoOutput(demoList):
             Exsheet.cell(row=i+1,column=j+1,value=str(demoList[i][j]))
     Exbook.save('demo.xlsx')
     
-def coreDataBeneficiate():
-    pass
+def coreDataBeneficiate(coreList):
+    rowPtr=len(coreList)-1
+    colStart=len(coreList[2])
+    colEnd=len(coreList[rowPtr])
+    for i in range(colStart,colEnd):
+        del coreList[rowPtr][-1]
+    del coreList[0:2]
+    return coreList
 
 def getURLcontent(url):
     try:
@@ -55,7 +61,7 @@ def getURLcontent(url):
 
 designative_url = "http://www.yxfcw.cn/sale/"
 htmlText=getURLcontent(designative_url).text
-htmlData=getData(htmlText)
+htmlData=coreDataBeneficiate(getData(htmlText))
 demoOutput(htmlData)
 
     
