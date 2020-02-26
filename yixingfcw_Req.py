@@ -10,7 +10,8 @@ from bs4 import BeautifulSoup
 from openpyxl import Workbook
 from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 import re
-import threading
+import time
+import xlsxwriter
 
 
 def getURLpool(htmlcontent):
@@ -52,14 +53,30 @@ def getData(htmlfile):
     #remove empty characters
     return DataList
 
+'''
 def DataOutput(bookList):
     Exbook=Workbook()
     Exsheet=Exbook.active
     Exsheet.title='sheet1'
     for i in range(0,len(bookList)):
         for j in range(0,len(bookList[i])):
+            if ILLEGAL_CHARACTERS_RE.finditer(str(bookList[i][j])):
+                ILLEGAL_CHARACTERS_RE.sub(r'', bookList[i][j].string)
             Exsheet.cell(row=i+1,column=j+1,value=str(bookList[i][j]))
-    Exbook.save('newdemo.xlsx')
+    now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
+    path=now+r".xlsx"
+    Exbook.save(path)
+'''
+    
+def DataListOutput(OutList):
+    now = time.strftime("%Y-%m-%d-%H_%M_%S",time.localtime(time.time())) 
+    path=now+r".xlsx"
+    outbook=xlsxwriter.Workbook(path)
+    outsheet=outbook.add_worksheet('sheet1')
+    for i in range(0,len(OutList)):
+        for j in range(0,len(OutList[i])):
+            outsheet.write(i+1,j+1,str(OutList[i][j]))
+    outbook.close()
     
 def coreDataBeneficiate(coreList):
     rowPtr=len(coreList)-1
@@ -120,31 +137,27 @@ class URLpool:
         except:
             return None     
 
-def ReqTimer():
-    count=0
+def ReqThread():
+    #count=0
     while(not Pool.isDone()):
         newURL=Pool.getOne()
         newcontent=coreDataBeneficiate(getData(getURLcontent(newURL).text))
         for k in range(0,len(newcontent)):
-            htmlData.append(newcontent[k])
-        
-        print('success')
+            htmlData.append(newcontent[k])        
+        ''''print('success')
         count=count+1
-        print(count)
-    global Timer
-    Timer=threading.Timer(0.200,ReqTimer)
-    Timer.start()
+        print(count)'''
+
     
 
 designative_url = "http://www.yxfcw.cn/sale/"
 htmlText=getURLcontent(designative_url).text
 getURLpool(htmlText)
+Pool.Visit(designative_url)
 htmlData=coreDataBeneficiate(getData(htmlText))
-ReqTimer()
-Timer.cancel()
+ReqThread()
 
-
-DataOutput(htmlData)
+DataListOutput(htmlData)
 
     
 
