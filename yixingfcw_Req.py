@@ -8,6 +8,7 @@ Created on Wed Feb 12 20:42:56 2020
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import Workbook
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 import re
 import threading
 
@@ -58,7 +59,7 @@ def DataOutput(bookList):
     for i in range(0,len(bookList)):
         for j in range(0,len(bookList[i])):
             Exsheet.cell(row=i+1,column=j+1,value=str(bookList[i][j]))
-    Exbook.save('demo.xlsx')
+    Exbook.save('newdemo.xlsx')
     
 def coreDataBeneficiate(coreList):
     rowPtr=len(coreList)-1
@@ -74,7 +75,7 @@ def getURLcontent(url):
     try:
         clientType={'user-agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) \
                     AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'}
-        wholeGet=requests.get(url,headers=clientType,timeout=30)
+        wholeGet=requests.get(url,headers=clientType,timeout=70)
         #delay to avoid being blocked
         wholeGet.raise_for_status()
         wholeGet.encoding=wholeGet.apparent_encoding
@@ -120,12 +121,18 @@ class URLpool:
             return None     
 
 def ReqTimer():
+    count=0
     while(not Pool.isDone()):
         newURL=Pool.getOne()
         newcontent=coreDataBeneficiate(getData(getURLcontent(newURL).text))
-        htmlData.append(newcontent)
+        for k in range(0,len(newcontent)):
+            htmlData.append(newcontent[k])
+        
+        print('success')
+        count=count+1
+        print(count)
     global Timer
-    Timer=threading.Timer(0.500,ReqTimer)
+    Timer=threading.Timer(0.200,ReqTimer)
     Timer.start()
     
 
@@ -133,7 +140,8 @@ designative_url = "http://www.yxfcw.cn/sale/"
 htmlText=getURLcontent(designative_url).text
 getURLpool(htmlText)
 htmlData=coreDataBeneficiate(getData(htmlText))
-
+ReqTimer()
+Timer.cancel()
 
 
 DataOutput(htmlData)
