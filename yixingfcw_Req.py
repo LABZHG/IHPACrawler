@@ -8,11 +8,32 @@ Created on Wed Feb 12 20:42:56 2020
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import Workbook
+import re
+import threading
+
+
+def getURLpool(htmlcontent):
+    tempIndex=htmlcontent.find("pagelist")
+    endIndex=htmlcontent.find("尾页")
+    content=htmlcontent[tempIndex:endIndex]
+    SearchRe='href=\.*?(.*?)[>c]'
+    SearchList=re.findall(SearchRe,content)
+    global Pool
+    Pool=URLpool()
+    for A in SearchList[:-1]:
+        Pool.Add("http://www.yxfcw.cn"+eval(A))
+    for i in range(8,51):
+        tempURL="http://www.yxfcw.cn/sale/"+"page"+str(i)+".html"
+        if Pool.isInPool(tempURL):
+            continue
+        else:
+            Pool.Add(tempURL)
 
 
 def getData(htmlfile):
     wholeData=BeautifulSoup(htmlfile,"html.parser")
     Databegin=wholeData.div
+    #father Tag
     for sibling in (Databegin.find_next_siblings()):
         if(sibling.attrs=={'id':'yimao1200'}):
             getList=sibling
@@ -25,23 +46,25 @@ def getData(htmlfile):
             if(len(tempRow)):
                 finalList.append(tempRow[:])
             tempRow.clear()
-            continue  
+            continue
     DataList = list(filter(None, finalList)) 
+    #remove empty characters
     return DataList
 
-def demoOutput(demoList):
+def DataOutput(bookList):
     Exbook=Workbook()
     Exsheet=Exbook.active
     Exsheet.title='sheet1'
-    for i in range(0,len(demoList)):
-        for j in range(0,len(demoList[i])):
-            Exsheet.cell(row=i+1,column=j+1,value=str(demoList[i][j]))
+    for i in range(0,len(bookList)):
+        for j in range(0,len(bookList[i])):
+            Exsheet.cell(row=i+1,column=j+1,value=str(bookList[i][j]))
     Exbook.save('demo.xlsx')
     
 def coreDataBeneficiate(coreList):
     rowPtr=len(coreList)-1
     colStart=len(coreList[2])
     colEnd=len(coreList[rowPtr])
+    #清洗头尾的多余无效字符
     for i in range(colStart,colEnd):
         del coreList[rowPtr][-1]
     del coreList[0:2]
@@ -51,18 +74,69 @@ def getURLcontent(url):
     try:
         clientType={'user-agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) \
                     AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'}
-        wholeGet=requests.get(url,headers=clientType,timeout=20)
+        wholeGet=requests.get(url,headers=clientType,timeout=30)
+        #delay to avoid being blocked
         wholeGet.raise_for_status()
         wholeGet.encoding=wholeGet.apparent_encoding
         return wholeGet
     except:
         print("意外中止")
+
+class URLpool: 
+    #待访问URL的集合
+    def __init__(self):
+        self.visited=[]
+        self.unvisited=[]
         
+    def visArray(self):
+        return self.visited
+    
+    def unvisArray(self):
+        return self.unvisited
+    
+    def isVisited(self,URL):
+        return URL in self.visited
+    
+    def isInPool(self,URL):
+        return URL in self.unvisited
+    
+    def Visit(self,URL):
+        return self.visited.append(URL)
+    
+    def Add(self,URL):
+        return self.unvisited.append(URL)
+    
+    def clearPool(self):
+        self.visited.clear()
+        self.unvisited.clear()
+        
+    def isDone(self):
+        return (len(self.unvisited) == 0)
+    
+    def getOne(self):
+        try:
+            return self.unvisited.pop()
+        except:
+            return None     
+
+def ReqTimer():
+    while(not Pool.isDone()):
+        newURL=Pool.getOne()
+        newcontent=coreDataBeneficiate(getData(getURLcontent(newURL).text))
+        htmlData.append(newcontent)
+    global Timer
+    Timer=threading.Timer(0.500,ReqTimer)
+    Timer.start()
+    
 
 designative_url = "http://www.yxfcw.cn/sale/"
 htmlText=getURLcontent(designative_url).text
+getURLpool(htmlText)
 htmlData=coreDataBeneficiate(getData(htmlText))
-demoOutput(htmlData)
+
+
+
+DataOutput(htmlData)
 
     
 
