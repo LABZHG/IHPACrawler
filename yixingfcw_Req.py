@@ -2,13 +2,13 @@
 """
 Created on Wed Feb 12 20:42:56 2020
 
-@author: zhg
+@author: labzhg
 """
 
 import requests
 from bs4 import BeautifulSoup
-from openpyxl import Workbook
-from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
+#from openpyxl import Workbook
+#from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 import re
 import time
 import xlsxwriter
@@ -75,7 +75,7 @@ def DataListOutput(OutList):
     outsheet=outbook.add_worksheet('sheet1')
     for i in range(0,len(OutList)):
         for j in range(0,len(OutList[i])):
-            outsheet.write(i+1,j+1,str(OutList[i][j]))
+            outsheet.write(i,j,str(OutList[i][j]))
     outbook.close()
     
 def coreDataBeneficiate(coreList):
