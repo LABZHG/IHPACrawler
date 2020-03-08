@@ -14,9 +14,19 @@ dbTable="__date__"
 client=MongoClient(Mongo_URL)
 DBase=client[dbName]
 
-def insertData(data):
-    if (DBase[dbTable].insert(data)):
+def insertSingleData(data):
+    if (DBase[dbTable].insert_one(data)):
         return True
     else:
         return False;
+
+def insertManyData(datalist:list):
+    if (DBase[dbTable].insert_many(datalist)):
+        return True
+    else:
+        return False;
+
+def FindData(datakey,dataval):
+    ret=DBase[dbTable].find_one({datakey:dataval})
+    return ret
     
