@@ -2,7 +2,7 @@
 """
 Created on Tue Mar  3 22:26:39 2020
 
-@author: user
+@author: labzhg
 """
 
 import tensorflow as tf
@@ -26,3 +26,5 @@ class Layer:
             self.embeddingInputs = tf.expand_dims(self.embeddingInputs,-1)
         pooled=[]
         
+    def inAnalysis():
+        pass
