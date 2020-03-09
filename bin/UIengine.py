@@ -2,7 +2,7 @@
 """
 Created on Fri Feb 28 23:01:04 2020
 
-@author: user
+@author: labzhg
 """
 
 from flask import Flask, render_template
@@ -15,7 +15,6 @@ App_engine=Flask(__name__)
 def UIhomepage():
     home='FlaskHome.html'
     return render_template(home)
-
 
 
 if __name__ =="__main__":
