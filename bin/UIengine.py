@@ -13,7 +13,7 @@ App_engine=Flask(__name__)
 
 
 def UIhomepage():
-    home='FalskHome.html'
+    home='FlaskHome.html'
     return render_template(home)
 
 

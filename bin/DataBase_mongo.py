@@ -6,6 +6,7 @@ Created on Fri Feb 28 22:42:43 2020
 """
 
 from pymongo import MongoClient
+from bson import ObjectId
 
 Mongo_URL="mongodb://localhost:2100"
 dbName="FullMessage"
@@ -26,7 +27,13 @@ def insertManyData(datalist:list):
     else:
         return False;
 
-def FindData(datakey,dataval):
-    ret=DBase[dbTable].find_one({datakey:dataval})
+def FindData(datakey,dataval,Id=''):
+    if(Id):
+        ret=DBase[dbTable].find_one({'_id':ObjectId(Id)})
+    else:
+        ret=DBase[dbTable].find_one({datakey:dataval})
     return ret
+
+
+
     
