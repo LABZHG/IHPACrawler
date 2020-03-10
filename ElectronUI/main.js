@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { app } = electron;
+const { appEngine } = electron;
 const { BrowserWindow } = electron;
 let win;
 function createWindow() {
@@ -11,3 +11,11 @@ function createWindow() {
     win = null;
   });
 }
+
+
+appEngine.on('ready', createWindow)
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        appEngine.quit()
+      }
+})
