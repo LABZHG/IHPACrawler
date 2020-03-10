@@ -1,0 +1,16 @@
+{
+  "name": "electronui",
+  "version": "1.0.0",
+  "description": "CrawlerUI",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LABZHG/IHPACrawler/tree/master/ElectronUI.git"
+  },
+  "author": "labzhg",
+  "license": "ISC"
+}
