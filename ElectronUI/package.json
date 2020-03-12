@@ -12,5 +12,9 @@
     "url": "https://github.com/LABZHG/IHPACrawler/tree/master/ElectronUI.git"
   },
   "author": "labzhg",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^8.1.1",
+    "python-shell": "^1.0.8"
+  }
 }
