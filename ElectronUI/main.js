@@ -13,7 +13,14 @@ function createWindow() {
     win = null;
   });
 }
-
+const {PythonShell}  = require("python-shell")
+PythonShell.run(
+	"UIengine.py", null, function (err, results) {
+        if (err) throw err
+        console.log('UIengine.py finished')
+        console.log('results', results)
+    }
+)
 
 appEngine.on('ready', createWindow);
 
