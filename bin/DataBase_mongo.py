@@ -27,12 +27,18 @@ def insertManyData(datalist:list):
     else:
         return False;
 
-def FindData(datakey,dataval,Id=''):
-    if(Id):
-        ret=DBase[dbTable].find_one({'_id':ObjectId(Id)})
+def FindData(datakey,dataval,Id='',multi=False):
+    if(multi):
+        return DBase[dbTable].find({datakey:dataval})
     else:
-        ret=DBase[dbTable].find_one({datakey:dataval})
-    return ret
+        if(Id):
+            ret=DBase[dbTable].find_one({'_id':ObjectId(Id)})
+        else:
+            ret=DBase[dbTable].find_one({datakey:dataval})
+        return ret
+
+def countNums():
+    return DBase[dbTable].count_documents({})
 
 
 
