@@ -10,6 +10,7 @@ from bson import ObjectId
 import xlrd
 import json
 
+
 Mongo_URL="mongodb://localhost:2100"
 dbName="FullMessage"
 dbTable="__date__"
@@ -53,5 +54,17 @@ def readExcel(filePath):
         readData[i]=json.loads(readData[i])
         insertSingleData(readData[i])
 
+def removeData(datakey,dataval,Id='',multi=False):
+    if(multi):
+        DBase[dbTable].remove({datakey:dataval})
+        return True
+    else:
+        if(Id):
+            datatoDel=DBase[dbTable].find_one({'_id':ObjectId(Id)})
+            DBase[dbTable].remove(datatoDel)
+        else:
+            datatoDel=DBase[dbTable].find_one({datakey:dataval})
+            DBase[dbTable].remove(datatoDel)
+        return True
 
     
