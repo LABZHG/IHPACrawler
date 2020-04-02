@@ -9,10 +9,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'hellospider'
+BOT_NAME = 'Enhancedspider'
 
-SPIDER_MODULES = ['hellospider.spiders']
-NEWSPIDER_MODULE = 'hellospider.spiders'
+SPIDER_MODULES = ['Enhancedspider.spiders']
+NEWSPIDER_MODULE = 'Enhancedspider.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -22,7 +22,7 @@ NEWSPIDER_MODULE = 'hellospider.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
